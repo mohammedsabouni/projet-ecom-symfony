@@ -9,6 +9,7 @@ use App\Mapper\CategoryMapper;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -72,5 +73,18 @@ final class CategoryController extends AbstractController
         $em->flush();
 
         return $this->redirectToRoute('app_category');
+    }
+
+    #[Route('/category/browse', name: 'app_category_getcategories', methods: ['GET'])]
+
+    public function getCategories(CategoryRepository $categoryRepository, CategoryMapper $mapper): Response
+    {
+        $categories = $categoryRepository->findAll();
+        $categories = $mapper->toDtoList($categories);
+
+        return $this->render('category/browse_categories.html.twig', [
+            'controller_name' => 'CategoryController',
+            'categories' => $categories,
+        ]);
     }
 }

@@ -19,6 +19,7 @@ class CategoryMapper
     public function toDto(Category $category): CategoryDto
     {
         $dto = new CategoryDto();
+        $dto->setId($category->getId());
         $dto->setName($category->getName());
         $dto->setDescription($category->getDescription());
 
@@ -30,4 +31,11 @@ class CategoryMapper
         $category->setName($dto->getName());
         $category->setDescription($dto->getDescription());
     }
+
+    /** @param Category[] $categories */
+    public function toDtoList(array $categories): array
+    {
+        return array_map(fn(Category $c) => $this->toDto($c), $categories);
+    }
+
 }

@@ -4,7 +4,18 @@ namespace App\Dto;
 
 class CategoryDto
 {
+    private ?int $id = null;
     private ?string $name;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function setId(?int $id): void
+    {
+        $this->id = $id;
+    }
 
     private ?string $description;
 

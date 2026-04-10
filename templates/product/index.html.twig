@@ -1,90 +1,52 @@
 {% extends 'layout.html.twig' %}
-{% block title %} product name {% endblock title %}
+
+{% block title %}Products{% endblock %}
+
 {% block content %}
-
-    <!-- Products Section -->
     <div class="container my-5">
-        <h1 class="mb-4">Our Products</h1>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="mb-0">Products</h4>
+            <a href="{{ path('app_product_add') }}" class="btn btn-dark">New Product</a>
+        </div>
 
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-            <!-- Product 1 -->
-            <div class="col">
-                <div class="card h-100">
-                    <img src="item.png" class="card-img-top" alt="Product 1">
-                    <div class="card-body">
-                        <span class="badge bg-primary mb-2">Electronics</span>
-                        <h5 class="card-title">Wireless Headphones</h5>
-                        <p class="card-text fw-bold text-success">$79.99</p>
-                        <a href="details.html?id=1" class="btn btn-outline-primary">View Details</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Product 2 -->
-            <div class="col">
-                <div class="card h-100">
-                    <img src="item.png" class="card-img-top" alt="Product 2">
-                    <div class="card-body">
-                        <span class="badge bg-warning mb-2">Fashion</span>
-                        <h5 class="card-title">Classic Leather Jacket</h5>
-                        <p class="card-text fw-bold text-success">$149.99</p>
-                        <a href="details.html?id=2" class="btn btn-outline-primary">View Details</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Product 3 -->
-            <div class="col">
-                <div class="card h-100">
-                    <img src="item.png" class="card-img-top" alt="Product 3">
-                    <div class="card-body">
-                        <span class="badge bg-success mb-2">Home & Garden</span>
-                        <h5 class="card-title">Smart Plant Sensor</h5>
-                        <p class="card-text fw-bold text-success">$34.99</p>
-                        <a href="details.html?id=3" class="btn btn-outline-primary">View Details</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Product 4 -->
-            <div class="col">
-                <div class="card h-100">
-                    <img src="item.png" class="card-img-top" alt="Product 4">
-                    <div class="card-body">
-                        <span class="badge bg-info mb-2">Sports</span>
-                        <h5 class="card-title">Yoga Mat Premium</h5>
-                        <p class="card-text fw-bold text-success">$29.99</p>
-                        <a href="details.html?id=4" class="btn btn-outline-primary">View Details</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Product 5 -->
-            <div class="col">
-                <div class="card h-100">
-                    <img src="item.png" class="card-img-top" alt="Product 5">
-                    <div class="card-body">
-                        <span class="badge bg-primary mb-2">Electronics</span>
-                        <h5 class="card-title">Bluetooth Speaker</h5>
-                        <p class="card-text fw-bold text-success">$59.99</p>
-                        <a href="details.html?id=5" class="btn btn-outline-primary">View Details</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Product 6 -->
-            <div class="col">
-                <div class="card h-100">
-                    <img src="item.png" class="card-img-top" alt="Product 6">
-                    <div class="card-body">
-                        <span class="badge bg-danger mb-2">Books</span>
-                        <h5 class="card-title">Web Development Guide</h5>
-                        <p class="card-text fw-bold text-success">$24.99</p>
-                        <a href="details.html?id=6" class="btn btn-outline-primary">View Details</a>
-                    </div>
-                </div>
+        <div class="card shadow-sm">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>SKU</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for product in products %}
+                        <tr>
+                            <td>{{ product.id }}</td>
+                            <td>{{ product.name }}</td>
+                            <td>{{ product.sku }}</td>
+                            <td>{{ product.category.name }}</td>
+                            <td>${{ product.sellPrice }}</td>
+                            <td class="text-end">
+                                <a href="{{ path('app_product_show', {id: product.id}) }}" class="btn btn-sm btn-outline-primary">View</a>
+                                <a href="{{ path('app_product_edit', {id: product.id}) }}" class="btn btn-sm btn-outline-secondary">Edit</a>
+                                <form action="{{ path('app_product_delete', {id: product.id}) }}" method="POST" onsubmit="return confirm('Are you sure?')" class="d-inline">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="6" class="text-center text-muted py-4">No products found.</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
-
-{% endblock content %}
+{% endblock %}

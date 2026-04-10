@@ -1,0 +1,63 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Add Product{% endblock %}
+
+{% block content %}
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-sm">
+                    <div class="card-header">
+                        <h5 class="mb-0">Add Product</h5>
+                    </div>
+                    <div class="card-body p-4">
+                        {{ form_start(form) }}
+                        {{ form_errors(form) }}
+
+                        <div class="mb-3">
+                            {{ form_label(form.name, null, {label_attr: {class: 'form-label'}}) }}
+                            {{ form_widget(form.name, {attr: {class: 'form-control'}}) }}
+                            {{ form_errors(form.name) }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form_label(form.slug, null, {label_attr: {class: 'form-label'}}) }}
+                            {{ form_widget(form.slug, {attr: {class: 'form-control'}}) }}
+                            {{ form_errors(form.slug) }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form_label(form.description, null, {label_attr: {class: 'form-label'}}) }}
+                            {{ form_widget(form.description, {attr: {class: 'form-control'}}) }}
+                            {{ form_errors(form.description) }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form_label(form.sku, null, {label_attr: {class: 'form-label'}}) }}
+                            {{ form_widget(form.sku, {attr: {class: 'form-control'}}) }}
+                            {{ form_errors(form.sku) }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form_label(form.sellPrice, null, {label_attr: {class: 'form-label'}}) }}
+                            {{ form_widget(form.sellPrice, {attr: {class: 'form-control'}}) }}
+                            {{ form_errors(form.sellPrice) }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form_label(form.category, null, {label_attr: {class: 'form-label'}}) }}
+                            {{ form_widget(form.category, {attr: {class: 'form-select'}}) }}
+                            {{ form_errors(form.category) }}
+                        </div>
+                    </div>
+
+                    <div class="card-footer d-flex justify-content-end gap-2">
+                        <a href="{{ path('app_product') }}" class="btn btn-outline-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-dark">Save</button>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

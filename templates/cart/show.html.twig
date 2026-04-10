@@ -1,0 +1,131 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Shopping Cart - Our Store{% endblock %}
+
+{% block content %}
+    <div class="container my-5">
+        <h1 class="mb-4">Shopping Cart</h1>
+
+        <div class="row">
+            <!-- Cart Items -->
+            <div class="col-lg-8">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        {% if cart.cartItems is empty %}
+                            <div class="alert alert-info mb-0">
+                                Your cart is empty. <a href="">Start shopping</a>
+                            </div>
+                        {% else %}
+                            <div class="table-responsive">
+                                <table class="table align-middle">
+                                    <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>Price</th>
+                                        <th>Quantity</th>
+                                        <th>Total</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% set subtotal = 0 %}
+                                    {% for item in cart.cartItems %}
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <img src="thumbnail.png"
+                                                         class="img-thumbnail me-3"
+                                                         alt="{{ item.product.name }}"
+                                                         style="width: 80px; height: 80px; object-fit: cover;">
+                                                    <div>
+                                                        <h6 class="mb-0">{{ item.product.name }}</h6>
+                                                        <small class="text-muted">SKU: {{ item.product.sku }}</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>${{ item.price }}</td>
+                                            <td>{{ item.quantity }}</td>
+                                            <td class="fw-bold">44444 </td>
+                                            <td>
+                                                <form action="{{ path('cart_remove', { id: item.product.id }) }}" method="POST">
+                                                    <input type="hidden" name="_token" value="{{ csrf_token('cart_remove') }}">
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger">Remove</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <a href="" class="btn btn-outline-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+                        </svg>
+                        Continue Shopping
+                    </a>
+
+                    {% if cart.cartItems is not empty %}
+                        <form action="{{ path('cart_clear') }}" method="POST">
+                            <input type="hidden" name="_token" value="{{ csrf_token('cart_clear') }}">
+                            <button type="submit" class="btn btn-outline-danger">Clear Cart</button>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Order Summary</h5>
+                    </div>
+                    <div class="card-body">
+
+
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Subtotal:</span>
+                            <span>100</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Shipping:</span>
+                            <span>10</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Tax (8%):</span>
+                            <span>20</span>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between mb-3">
+                            <strong>Total:</strong>
+                            <strong class="text-success">444</strong>
+                        </div>
+                        <div class="d-grid">
+                            <a href="" class="btn btn-success btn-lg">
+                                Proceed to Checkout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Promo Code -->
+                <div class="card mt-3">
+                    <div class="card-body">
+                        <h6 class="card-title">Have a promo code?</h6>
+                        <form action="" method="POST">
+                            <input type="hidden" name="_token" value="{{ csrf_token('cart_promo') }}">
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="code" placeholder="Enter code">
+                                <button class="btn btn-outline-secondary" type="submit">Apply</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
