@@ -1,0 +1,48 @@
+{% extends 'layout.html.twig' %}
+{% block title %} Login - Our Store {% endblock %}
+{% block content %}
+
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+                <form method="post">
+                    <div class="card shadow-sm">
+                        <div class="card-header">
+                            <h5 class="mb-0">Login to Your Account</h5>
+                        </div>
+                        <div class="card-body p-4">
+                            {% if error %}
+                                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                            {% endif %}
+
+                            {% if app.user %}
+                                <div class="alert alert-info">
+                                    You are logged in as {{ app.user.userIdentifier }}, <a href="{{ logout_path() }}">Logout</a>
+                                </div>
+                            {% endif %}
+
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Email</label>
+                                <input type="email" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="email" required autofocus>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" name="_remember_me" id="_remember_me" class="form-check-input">
+                                <label for="_remember_me" class="form-check-label">Remember me</label>
+                            </div>
+                            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                        </div>
+                        <div class="card-footer d-flex justify-content-end gap-2">
+                            <a href="{{ path('app_register') }}" class="btn btn-outline-secondary">Create an account</a>
+                            <button type="submit" class="btn btn-dark">Login</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
