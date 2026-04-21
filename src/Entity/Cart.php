@@ -76,4 +76,15 @@ class Cart
 
         return $this;
     }
+
+    public function getTotal(): float
+    {
+        $total = 0.0;
+
+        foreach ($this->cartItems as $cartItem) {
+            $total += $cartItem->getProduct()->getSellPrice() * $cartItem->getQuantity();
+        }
+
+        return $total;
+    }
 }

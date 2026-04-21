@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
+use App\Dto\CartDetailsDto;
 use App\Entity\CartItem;
-use App\Handler\CartHandler;
 use App\Repository\ProductRepository;
 use App\Strategies\cart\impl\SessionCart;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,7 +14,6 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/cart', name: 'cart_')]
 class CartController extends AbstractController
 {
-    //TODO: add total logic
     public function __construct(private SessionCart $sessionCart)
     {
     }
@@ -25,8 +24,22 @@ class CartController extends AbstractController
     {
         $cart = $this->sessionCart->getCart();
 
+        $cartDetails = [];
+        foreach ($cart->getCartItems() as $cartItem) {
+            $product = $cartItem->getProduct();
+            $cartDetails[] = new CartDetailsDto(
+                productId: $product->getId(),
+                productName: $product->getName(),
+                sku: $product->getSku(),
+                price: $product->getSellPrice(),
+                quantity: $cartItem->getQuantity(),
+                total: $product->getSellPrice() * $cartItem->getQuantity(),
+            );
+        }
+
         return $this->render('cart/show.html.twig', [
-            'cart' => $cart,
+            'cartDetails' => $cartDetails,
+            'cartTotal' => $cart->getTotal(),
         ]);
     }
 
